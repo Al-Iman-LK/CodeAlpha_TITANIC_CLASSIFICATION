@@ -6,6 +6,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.impute import SimpleImputer
 import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 # Data Preprocessing
 # Load Titanic dataset
@@ -68,3 +71,23 @@ def predict_survival(input_data):
     loaded_model = joblib.load('logistic_regression_model.pkl')
     predictions = loaded_model.predict(input_data)
     return predictions
+
+# Calculate performance metrics
+accuracy = accuracy_score(y_test, y_pred_best)
+classification_rep = classification_report(y_test, y_pred_best)
+
+# Create confusion matrix
+cm = confusion_matrix(y_test, y_pred_best)
+
+# Visualize confusion matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=['Not Survived', 'Survived'], yticklabels=['Not Survived', 'Survived'])
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.title('Confusion Matrix')
+plt.show()
+
+# Print accuracy and classification report
+print("Accuracy:", accuracy)
+print("\nClassification Report:")
+print(classification_rep)
